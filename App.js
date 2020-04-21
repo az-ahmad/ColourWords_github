@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Styles } from "./syles/Styles";
+import { Styles } from "./styles/Styles";
 import Play from "./components/Play";
 
 function HomeScreen({ navigation }) {
@@ -33,9 +33,11 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{
+      <Stack.Navigator
+        screenOptions={{
           headerShown: false,
-      }}>
+        }}
+      >
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Play" component={Play} />
       </Stack.Navigator>
