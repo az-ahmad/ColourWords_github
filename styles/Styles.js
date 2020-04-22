@@ -32,9 +32,8 @@ export const Styles = StyleSheet.create({
     fontSize: 70,
     fontWeight: "bold",
     textShadowColor: "#000",
-    textShadowRadius: 1,
+    textShadowRadius: 2,
   },
-
   gameButton: {
     flex: 1,
     marginLeft: "auto",
@@ -44,6 +43,5 @@ export const Styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 150,
-
   },
 });

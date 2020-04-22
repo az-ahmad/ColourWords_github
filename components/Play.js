@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { Styles } from "../styles/Styles";
 import { TapGestureHandler } from "react-native-gesture-handler";
 
-const Play = () => {
+const Play = ({ navigation }) => {
+  useEffect(() => {
+    return setScore(0);
+  }, []);
   const [score, setScore] = useState(0);
   const words = ["Red", "Blue", "Green", "Yellow"];
   const word = [...words[Math.floor(Math.random() * words.length)]].join("");
@@ -27,21 +30,27 @@ const Play = () => {
       console.log(score);
     } else {
       setScore(score - 1);
+      if (score <= 0) {
+        setScore("Game over");
+        Alert.alert(
+          "Game Over",
+          "You lost all your lives",
+          [{ text: "OK", onPress: () => navigation.navigate("Home") }],
+          { cancelable: false }
+        );
+      }
     }
   };
 
   const buttons = wordColors.map((colour) => {
     return (
-      <React.Fragment>
-        <View
-          key={colour}
-          style={[Styles.gameButton, { backgroundColor: colour }]}
-        >
-          <TouchableOpacity onPress={() => tapHandler(colour)}>
-            <Text>BUTTON 2</Text>
-          </TouchableOpacity>
-        </View>
-      </React.Fragment>
+      <View
+        key={colour}
+        style={[Styles.gameButton, { backgroundColor: colour }]}
+        onTouchStart={() => tapHandler(colour)}
+      >
+        <TouchableOpacity></TouchableOpacity>
+      </View>
     );
   });
 
@@ -50,7 +59,9 @@ const Play = () => {
       <View style={Styles.container}>
         <ScrollView>
           <View style={{ marginTop: 150 }}>
-            <Text>Score: {score}</Text>
+            <Text style={{ marginLeft: "auto", marginRight: "auto" }}>
+              Score: {score}
+            </Text>
             <Text style={[Styles.gameBlank, { color: question }]}>{word}</Text>
           </View>
         </ScrollView>
