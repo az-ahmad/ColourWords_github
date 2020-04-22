@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  FlatList,
+} from "react-native";
 import { Styles } from "../styles/Styles";
-import { TapGestureHandler } from "react-native-gesture-handler";
 
 const Play = ({ navigation }) => {
   useEffect(() => {
@@ -42,18 +48,6 @@ const Play = ({ navigation }) => {
     }
   };
 
-  const buttons = wordColors.map((colour) => {
-    return (
-      <View
-        key={colour}
-        style={[Styles.gameButton, { backgroundColor: colour }]}
-        onTouchStart={() => tapHandler(colour)}
-      >
-        <TouchableOpacity></TouchableOpacity>
-      </View>
-    );
-  });
-
   return (
     <React.Fragment>
       <View style={Styles.container}>
@@ -65,9 +59,29 @@ const Play = ({ navigation }) => {
             <Text style={[Styles.gameBlank, { color: question }]}>{word}</Text>
           </View>
         </ScrollView>
-        <View>
-          <View style={{ flexDirection: "row", width: "100%" }}>{buttons}</View>
-        </View>
+      </View>
+      <View>
+        <FlatList
+          numColumns={2}
+          keyExtractor={(item) => item}
+          data={wordColors}
+          renderItem={({ item }) => (
+            <View
+              style={
+                (Styles.gameButton,
+                {
+                  backgroundColor: item,
+                  flex: 1,
+                  height: 150,
+                  borderWidth: 0.5,
+                })
+              }
+              onTouchStart={() => tapHandler(item)}
+            >
+              <TouchableOpacity></TouchableOpacity>
+            </View>
+          )}
+        />
       </View>
     </React.Fragment>
   );
