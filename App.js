@@ -6,6 +6,7 @@ import { Styles } from "./styles/Styles";
 import Play from "./components/Play";
 import ErrorBoundary from "./ErrorBoundary";
 
+// navigation prop was passed in from function App below, allows component to navigate
 function HomeScreen({ navigation }) {
   return (
     <View style={Styles.container}>
@@ -17,6 +18,9 @@ function HomeScreen({ navigation }) {
           <Text style={{ color: "#1fc733" }}>d</Text>s
         </Text>
         <View style={{ marginTop: "20%" }}>
+
+          {/* Buttons in React Native cant be styled, so TouchableOpacitys are made and used instead */}
+
           <TouchableOpacity
             style={Styles.buttons}
             onPress={() => navigation.navigate("Play")}
@@ -29,17 +33,21 @@ function HomeScreen({ navigation }) {
   );
 }
 
+// initalise Navigator 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    // I was getting some error aboout error boundary, stackoverflow said make the ErrorBoundary component
     <ErrorBoundary>
       <NavigationContainer>
+        {/* A header comes as default with the navigator, just set it to hidden */}
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
           }}
         >
+          {/* The pages that can be navigated to are declared here and referenced to */}
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Play" component={Play} />
         </Stack.Navigator>
