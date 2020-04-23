@@ -5,9 +5,11 @@ import Timer from "./timer";
 
 const Play = ({ navigation }) => {
   // Playing state to check if the game is session or not
-  const [playing, setPlaying] = useState(true);
+  const [ playing, setPlaying ] = useState(true);
   // Score state to track score
-  const [score, setScore] = useState(0);
+  const [ score, setScore ] = useState(0);
+  // Lives state to track lives
+  const [ lives, setLives ] = useState(3)
   // Array of words that are displayed
   const words = ["Red", "Blue", "Green", "Yellow"];
   // A random word chosen from the array of words
@@ -29,17 +31,18 @@ const Play = ({ navigation }) => {
   const tapHandler = (colour) => {
     if (colour == question) {
       setScore(score + 1);
-    } else {
-      setScore(score - 1);
-      if (score <= 0) {
-        setScore("Game over");
+    } else if(lives == 1) {
+      setLives(lives - 1);
+      setPlaying(false)
         Alert.alert(
           "Game Over",
           "You lost all your lives",
           [{ text: "OK", onPress: () => navigation.navigate("Home") }],
           { cancelable: false }
         );
-      }
+    } else {
+      setLives(lives - 1);
+
     }
   };
   // Perform check to see game is active, if it is then show the content
@@ -56,7 +59,10 @@ const Play = ({ navigation }) => {
               <Timer
                 navigation={navigation}
                 setPlaying={setPlaying}
+                score={score}
+                isPlaying = {playing}
               />
+              <Text style={{ marginLeft: 'auto', marginRight: 'auto'}}>Lives: {lives}</Text>
               <Text style={{ marginLeft: "auto", marginRight: "auto" }}>
                 Score: {score}
               </Text>
@@ -68,7 +74,7 @@ const Play = ({ navigation }) => {
           </ScrollView>
         </View>
         <View>
-          {/* Use React Native to turn the array of colors into 'buttons', each has its own hex colour passed when through when tapped */}
+          {/* Use React Native module FlatList to turn the array of colors into 'buttons', each has its own hex colour passed when through when tapped */}
           <FlatList
             numColumns={2}
             keyExtractor={(item) => item}
