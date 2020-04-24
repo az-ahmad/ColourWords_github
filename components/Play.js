@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, Alert, FlatList } from "react
 import { Styles } from "../styles/Styles";
 import Timer from "./timer";
 
+
 const Play = ({ navigation }) => {
   // Playing state to check if the game is session or not
   const [ playing, setPlaying ] = useState(true);
@@ -45,6 +46,14 @@ const Play = ({ navigation }) => {
 
     }
   };
+// word displayed on screen with random font color
+  let shownWord = <Text style={[Styles.gameBlank, { color: question}]}>{word}</Text>
+
+  // can set diffuclty levels by making it more challenging as score increases
+  if (score > 5) {
+    shownWord = <Text style={[Styles.gameBlank, { color: question, textShadowColor: wordColorsObject[colorObject[(colorObject.length * Math.random()) << 0]], textShadowRadius: 5, textShadowOffset: {width: 0, height: 0}}]}>{word}</Text>
+
+  }
   // Perform check to see game is active, if it is then show the content
   let content = null;
   if (playing) {
@@ -66,10 +75,8 @@ const Play = ({ navigation }) => {
               <Text style={{ marginLeft: "auto", marginRight: "auto" }}>
                 Score: {score}
               </Text>
-              {/* Show a random word with a random text color */}
-              <Text style={[Styles.gameBlank, { color: question }]}>
-                {word}
-              </Text>
+              {/* Show a random word with a random text color, gets harder after after X score reached */}
+              {shownWord}
             </View>
           </ScrollView>
         </View>
