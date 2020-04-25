@@ -4,7 +4,7 @@ import { Text, Alert } from "react-native";
 const Timer = ({ navigation, setPlaying , isPlaying }) => {
   // The timer
   const [timeState, setTimeState] = useState({
-    timer: 5,
+    timer: 10,
   });
 
   // Condition check so component can be unmounted properly
