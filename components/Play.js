@@ -71,7 +71,7 @@ const Play = (props, { navigation }) => {
       Alert.alert(
         "Game Over",
         "You lost all your lives",
-        [{ text: "OK", onPress: () => navigation.navigate("Home") }],
+        [{ text: "OK", onPress: () => props.navigation.navigate("Home") }],
         { cancelable: false }
       );
     } else {

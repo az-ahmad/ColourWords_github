@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Text, Alert } from "react-native";
 
 const Timer = ({ navigation, setPlaying, isPlaying }) => {
-  console.log(navigation)
   // The timer
   const [timeState, setTimeState] = useState({
     timer: 10,
