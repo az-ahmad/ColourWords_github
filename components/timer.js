@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Text, Alert } from "react-native";
 
-const Timer = ({ navigation, setPlaying , isPlaying }) => {
+const Timer = ({ navigation, setPlaying, isPlaying }) => {
+  console.log(navigation)
   // The timer
   const [timeState, setTimeState] = useState({
     timer: 10,
@@ -10,9 +11,8 @@ const Timer = ({ navigation, setPlaying , isPlaying }) => {
   // Condition check so component can be unmounted properly
   let isCancelled = false;
 
-
   useEffect(() => {
-      // Timer function and lost conidition
+    // Timer function and lost conidition
     const interval = setInterval(() => {
       isPlaying && !isCancelled && setTimeState({ timer: timeState.timer - 1 });
     }, 1000);
@@ -25,7 +25,6 @@ const Timer = ({ navigation, setPlaying , isPlaying }) => {
         { cancelable: false }
       );
       setPlaying(false);
-
     }
     // unmount component properly
     return () => (isCancelled = true);

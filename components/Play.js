@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,14 +6,18 @@ import {
   ScrollView,
   Alert,
   FlatList,
+  AsyncStorage,
 } from "react-native";
 import { Styles } from "../styles/Styles";
 import Timer from "./timer";
 import shuffle from "./shuffle";
 
-const Play = ({ navigation }) => {
+const Play = (props, { navigation }) => {
+
   // Playing state to check if the game is session or not
   const [playing, setPlaying] = useState(true);
+  // Highscore state
+  const [highscore, setHighscore] = useState(0);
   // Score state to track score
   const [score, setScore] = useState(0);
   // Lives state to track lives
@@ -22,8 +26,15 @@ const Play = ({ navigation }) => {
   const words = ["Red", "Blue", "Green", "Yellow"];
   // A random word chosen from the array of words
   const word = [...words[Math.floor(Math.random() * words.length)]].join("");
+  // Array of words that are displayed
+  const wordsBlind = ["Pink", "Light Blue", "Dark Blue", "Orange"];
+  // A random word chosen from the array of words
+  const wordBlind = [...wordsBlind[Math.floor(Math.random() * wordsBlind.length)]].join("");
   // Differnt textcolors the word can be
   const wordColors = ["#ea3636", "#0093fb", "#1fc733", "#eae236"];
+  const wordColorsBlind = ["#56B4E9", "#CC79A7", "#E69F00", "#0072B2" ]
+
+
   // text color Object so they key/values can be matched together to determine correct/incorrect answers
   const wordColorsObject = {
     red: "#ea3636",
@@ -32,13 +43,27 @@ const Play = ({ navigation }) => {
     yellow: "#eae236",
   };
 
+  const wordColorsBlindObject = {
+    pink: "#CC79A7",
+    lightblue: "#56B4E9",
+    darkblue: "#0072B2",
+    orange: "#E69F00",
+  };
+
   // Takes a color from the object above and chooses a random one but retains the key
   const colorObject = Object.keys(wordColorsObject);
   const question =
     wordColorsObject[colorObject[(colorObject.length * Math.random()) << 0]];
+
+// Takes a color from the object above and chooses a random one but retains the key
+  const colorObjectBlind = Object.keys(wordColorsBlindObject);
+  const questionBlind =
+  wordColorsBlindObject[colorObjectBlind[(colorObjectBlind.length * Math.random()) << 0]];
+
+
   // Scoring function, checks if the color of the button pressed matches the text colour of the displayed word
   const tapHandler = (colour) => {
-    if (colour == question) {
+    if (colour == question || colour == questionBlind) {
       setScore(score + 1);
     } else if (lives == 1) {
       setLives(lives - 1);
@@ -54,13 +79,16 @@ const Play = ({ navigation }) => {
     }
   };
 
+  const isColourBlind = props.route.params.colourblind.colourblind.colourblind
+
   let tappableButtons = (
     <View>
       {/* Use React Native module FlatList to turn the array of colors into 'buttons', each has its own hex colour passed when through when tapped */}
       <FlatList
         numColumns={2}
         keyExtractor={(item) => item}
-        data={score > 10 ? shuffle(wordColors) : wordColors}
+        data={
+          score > 10 ? shuffle( isColourBlind ? wordColorsBlind: wordColors) : isColourBlind ? wordColorsBlind: wordColors}
         renderItem={({ item }) => (
           <View
             style={[
@@ -86,21 +114,25 @@ const Play = ({ navigation }) => {
           ? [
               Styles.gameBlank,
               {
-                color: question,
+                color: isColourBlind ? questionBlind : question,
                 textShadowColor:
-                  wordColorsObject[
+                  isColourBlind ? (wordColorsBlindObject[
+                    colorObjectBlind[(colorObjectBlind.length * Math.random()) << 0]
+                  ]) : (wordColorsObject[
                     colorObject[(colorObject.length * Math.random()) << 0]
-                  ],
+                  ]),
                 textShadowRadius: 5,
                 textShadowOffset: { width: 0, height: 0 },
               },
             ]
-          : [Styles.gameBlank, { color: question }]
+          : [Styles.gameBlank, { color: isColourBlind ? questionBlind : question }]
       }
     >
-      {word}
+      {isColourBlind ? wordBlind : word}
     </Text>
   );
+
+
 
   // Perform check to see game is active, if it is then show the content
   let content = null;
@@ -114,7 +146,7 @@ const Play = ({ navigation }) => {
                 setPlaying passed through so can be set to false when timer is up,
                 navigation passed so when user clicks ok after timer runs out they return to home screen*/}
               <Timer
-                navigation={navigation}
+                navigation={props.navigation}
                 setPlaying={setPlaying}
                 score={score}
                 isPlaying={playing}
@@ -130,11 +162,36 @@ const Play = ({ navigation }) => {
       </React.Fragment>
     );
   } else {
-    content = (
+    try {
+      AsyncStorage.getItem("highscore").then((result) => {
+        setHighscore(result);
+        if (score && score > result) {
+          try {
+            AsyncStorage.setItem("highscore", JSON.stringify(score));
+          } catch (error) {
+            // Error saving data
+          }
+        } else if (score && !result) {
+          try {
+            AsyncStorage.setItem("highscore", JSON.stringify(score));
+          } catch (error) {
+            // Error saving data
+          }
+        }
+      });
+    } catch (error) {
+      // Error retrieving data
+    }
+    content = 
       <View>
-        <Text style={[Styles.autoMargin,{ fontSize: 40, marginTop: 150}]}>YOUR SCORE {score}</Text>
+        <Text style={[Styles.autoMargin, { fontSize: 30, marginTop: 150 }]}>
+          YOUR SCORE {score}
+        </Text>
+        <Text style={[Styles.autoMargin, { fontSize: 20, marginTop: 10 }]}>
+          YOUR ALL TIME HIGHSCORE: {highscore}
+          </Text>
       </View>
-    )
+    ;
   }
 
   return <React.Fragment>{content}</React.Fragment>;

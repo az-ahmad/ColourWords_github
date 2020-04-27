@@ -44,11 +44,11 @@ export const Styles = StyleSheet.create({
     alignItems: "center",
     height: 150,
     flex: 1,
-                height: 150,
-                borderWidth: 0.5,
+    height: 150,
+    borderWidth: 0.5,
   },
   autoMargin: {
     marginLeft: "auto",
-    marginRight: "auto"
+    marginRight: "auto",
   },
 });
