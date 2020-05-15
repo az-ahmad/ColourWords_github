@@ -13,7 +13,6 @@ import Timer from "./timer";
 import shuffle from "./shuffle";
 
 const Play = (props, { navigation }) => {
-
   // Playing state to check if the game is session or not
   const [playing, setPlaying] = useState(true);
   // Highscore state
@@ -29,11 +28,12 @@ const Play = (props, { navigation }) => {
   // Array of words that are displayed
   const wordsBlind = ["Pink", "Light Blue", "Dark Blue", "Orange"];
   // A random word chosen from the array of words
-  const wordBlind = [...wordsBlind[Math.floor(Math.random() * wordsBlind.length)]].join("");
+  const wordBlind = [
+    ...wordsBlind[Math.floor(Math.random() * wordsBlind.length)],
+  ].join("");
   // Differnt textcolors the word can be
   const wordColors = ["#ea3636", "#0093fb", "#1fc733", "#eae236"];
-  const wordColorsBlind = ["#56B4E9", "#CC79A7", "#E69F00", "#0072B2" ]
-
+  const wordColorsBlind = ["#56B4E9", "#CC79A7", "#E69F00", "#0072B2"];
 
   // text color Object so they key/values can be matched together to determine correct/incorrect answers
   const wordColorsObject = {
@@ -55,11 +55,12 @@ const Play = (props, { navigation }) => {
   const question =
     wordColorsObject[colorObject[(colorObject.length * Math.random()) << 0]];
 
-// Takes a color from the object above and chooses a random one but retains the key
+  // Takes a color from the object above and chooses a random one but retains the key
   const colorObjectBlind = Object.keys(wordColorsBlindObject);
   const questionBlind =
-  wordColorsBlindObject[colorObjectBlind[(colorObjectBlind.length * Math.random()) << 0]];
-
+    wordColorsBlindObject[
+      colorObjectBlind[(colorObjectBlind.length * Math.random()) << 0]
+    ];
 
   // Scoring function, checks if the color of the button pressed matches the text colour of the displayed word
   const tapHandler = (colour) => {
@@ -79,7 +80,7 @@ const Play = (props, { navigation }) => {
     }
   };
 
-  const isColourBlind = props.route.params.colourblind.colourblind.colourblind
+  const isColourBlind = props.route.params.colourblind.colourblind.colourblind;
 
   let tappableButtons = (
     <View>
@@ -88,7 +89,12 @@ const Play = (props, { navigation }) => {
         numColumns={2}
         keyExtractor={(item) => item}
         data={
-          score > 10 ? shuffle( isColourBlind ? wordColorsBlind: wordColors) : isColourBlind ? wordColorsBlind: wordColors}
+          score > 10
+            ? shuffle(isColourBlind ? wordColorsBlind : wordColors)
+            : isColourBlind
+            ? wordColorsBlind
+            : wordColors
+        }
         renderItem={({ item }) => (
           <View
             style={[
@@ -115,24 +121,28 @@ const Play = (props, { navigation }) => {
               Styles.gameBlank,
               {
                 color: isColourBlind ? questionBlind : question,
-                textShadowColor:
-                  isColourBlind ? (wordColorsBlindObject[
-                    colorObjectBlind[(colorObjectBlind.length * Math.random()) << 0]
-                  ]) : (wordColorsObject[
-                    colorObject[(colorObject.length * Math.random()) << 0]
-                  ]),
-                textShadowRadius: 5,
+                textShadowColor: isColourBlind
+                  ? wordColorsBlindObject[
+                      colorObjectBlind[
+                        (colorObjectBlind.length * Math.random()) << 0
+                      ]
+                    ]
+                  : wordColorsObject[
+                      colorObject[(colorObject.length * Math.random()) << 0]
+                    ],
+                textShadowRadius: 15,
                 textShadowOffset: { width: 0, height: 0 },
               },
             ]
-          : [Styles.gameBlank, { color: isColourBlind ? questionBlind : question }]
+          : [
+              Styles.gameBlank,
+              { color: isColourBlind ? questionBlind : question },
+            ]
       }
     >
       {isColourBlind ? wordBlind : word}
     </Text>
   );
-
-
 
   // Perform check to see game is active, if it is then show the content
   let content = null;
@@ -141,7 +151,7 @@ const Play = (props, { navigation }) => {
       <React.Fragment>
         <View style={Styles.container}>
           <ScrollView>
-            <View style={{ marginTop: 150 }}>
+            <View style={{ marginTop: 110 }}>
               {/* Timer has its own state and it interferred with the re-rendering of this component, had to seperate it.
                 setPlaying passed through so can be set to false when timer is up,
                 navigation passed so when user clicks ok after timer runs out they return to home screen*/}
@@ -151,14 +161,23 @@ const Play = (props, { navigation }) => {
                 score={score}
                 isPlaying={playing}
               />
-              <Text style={Styles.autoMargin}>Lives: {lives}</Text>
-              <Text style={Styles.autoMargin}>Score: {score}</Text>
               {/* Show a random word with a random text color, gets harder after after X score reached */}
-              {shownWord}
+              <Text style={{ marginLeft: "auto", marginRight: "auto", marginTop: 30 }}>
+                {shownWord}
+              </Text>
+
             </View>
           </ScrollView>
         </View>
+        <View style={{backgroundColor: 'lightgrey'}}>
+        <Text style={{ marginLeft: 'auto', marginRight: 'auto', fontSize: 25}}>
+              ❤{" "}{lives}{"                     "}
+                <Text style={{right: 0}}>
+                  Score: {score}
+                </Text>
+              </Text>
         {tappableButtons}
+        </View>
       </React.Fragment>
     );
   } else {
@@ -182,16 +201,16 @@ const Play = (props, { navigation }) => {
     } catch (error) {
       // Error retrieving data
     }
-    content = 
+    content = (
       <View>
         <Text style={[Styles.autoMargin, { fontSize: 30, marginTop: 150 }]}>
           YOUR SCORE {score}
         </Text>
         <Text style={[Styles.autoMargin, { fontSize: 20, marginTop: 10 }]}>
           YOUR ALL TIME HIGHSCORE: {highscore}
-          </Text>
+        </Text>
       </View>
-    ;
+    );
   }
 
   return <React.Fragment>{content}</React.Fragment>;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, AsyncStorage } from "react-native";
+import { Text, View, TouchableOpacity, AsyncStorage, Modal, TouchableHighlight } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Styles } from "./styles/Styles";
@@ -12,6 +12,8 @@ function HomeScreen({ navigation }) {
   const coloursBlind = ["#56B4E9", "#CC79A7", "#E69F00", "#0072B2"];
 
   const [colourblind, setcolourblind] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   const onPressed = (colourblind) => {
       navigation.navigate('Play', {colourblind: {colourblind}})
@@ -19,7 +21,7 @@ function HomeScreen({ navigation }) {
 
   return (
     <View style={Styles.container}>
-      <View style={{ marginTop: "30%" }}>
+      <View style={{ marginTop: "30%", marginLeft: 'auto', marginRight: 'auto' }}>
         <Text style={Styles.title}>
           Color
           <Text style={{ color: colourblind ? coloursBlind[0] : colours[0] }}>
@@ -45,24 +47,52 @@ function HomeScreen({ navigation }) {
           >
             <Text style={Styles.buttonText}>Play!</Text>
           </TouchableOpacity>
-        </View>
-        <View>
+
           {/* Buttons in React Native cant be styled, so TouchableOpacitys are made and used instead */}
 
           <TouchableOpacity
-            style={{
-              backgroundColor: "#c7c7c7",
-              width: "60%",
-              marginLeft: "auto",
-              marginRight: "auto",
-              borderRadius: 7,
-              justifyContent: "center",
-              borderWidth: 1,
-            }}
+             style={Styles.buttons}
             onPress={() => setcolourblind(!colourblind)}
           >
             <Text style={Styles.buttonText}>
               Colourblind Mode: {colourblind ? "ON" : "OFF"}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Buttons in React Native cant be styled, so TouchableOpacitys are made and used instead */}
+          <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <View style={Styles.centeredView}>
+          <View style={Styles.modalView}>
+            <Text style={Styles.modalText}>Match the text colour itself, pay no attention to what the word spells out!</Text>
+            <Text style={Styles.modalText}>It will get more difficult as you progress</Text>
+
+            <TouchableHighlight
+              style={{ ...Styles.openButton, backgroundColor: "#c7c7c7", borderColor: 'black', borderWidth: 0.5 }}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={Styles.textStyle}>Hide</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
+
+          <TouchableOpacity
+             style={Styles.buttons}
+             onPress={() => {
+              setModalVisible(true);
+            }}
+          >
+            <Text style={Styles.buttonText}>
+              How To Play
             </Text>
           </TouchableOpacity>
         </View>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Text, Alert } from "react-native";
+import { Text, Alert, Image } from "react-native";
+import {Styles} from '../styles/Styles'
 
 const Timer = ({ navigation, setPlaying, isPlaying }) => {
   // The timer
@@ -31,7 +32,7 @@ const Timer = ({ navigation, setPlaying, isPlaying }) => {
 
   return (
     <React.Fragment>
-      <Text>Timer : {timeState.timer}</Text>
+      <Text style={[Styles.autoMargin,{fontSize: 25}]}>Time: {timeState.timer}</Text>
     </React.Fragment>
   );
 };
