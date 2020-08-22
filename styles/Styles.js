@@ -20,7 +20,7 @@ export const Styles = StyleSheet.create({
     marginRight: "auto",
     borderRadius: 7,
     justifyContent: "center",
-    borderWidth: 1,
+    borderWidth: 2,
     marginBottom: 40,
     paddingTop: 0,
     paddingBottom: 0,

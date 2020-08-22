@@ -116,19 +116,20 @@ function HomeScreen({ navigation }) {
                   It will get more difficult as you progress
                 </Text>
 
-                <TouchableHighlight
-                  style={{
-                    ...Styles.openButton,
-                    backgroundColor: "#fff",
-                    borderColor: "black",
-                    borderWidth: 0.5,
-                  }}
+                <TouchableOpacity
+                  style={
+                    Styles.buttons
+                  }
                   onPress={() => {
                     setModalVisible(!modalVisible);
                   }}
                 >
-                  <Text style={Styles.buttonText}>Hide</Text>
-                </TouchableHighlight>
+                  {colourblind ? <LinearGradient start={{x: 0, y: 1}} end={{x: 1, y: 1}} colors={["#0072B2", "#CC79A7","#56B4E9",  "#E69F00"]} style={Styles.linearGradient} >
+            <Text style={Styles.buttonText}>Hide</Text>
+            </LinearGradient> : <LinearGradient start={{x: 0, y: 1}} end={{x: 1, y: 1}} colors={["#1fc733","#ea3636", "#0093fb", "#eae236"]} style={Styles.linearGradient} >
+            <Text style={Styles.buttonText}>Hide</Text>
+            </LinearGradient>}
+                </TouchableOpacity>
               </View>
             </View>
           </Modal>
