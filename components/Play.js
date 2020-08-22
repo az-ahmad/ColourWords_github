@@ -11,6 +11,8 @@ import {
 import { Styles } from "../styles/Styles";
 import Timer from "./timer";
 import shuffle from "./shuffle";
+import {LinearGradient} from 'expo-linear-gradient';
+
 
 const Play = (props, { navigation }) => {
   // Playing state to check if the game is session or not
@@ -34,6 +36,8 @@ const Play = (props, { navigation }) => {
   // Differnt textcolors the word can be
   const wordColors = ["#ea3636", "#0093fb", "#1fc733", "#eae236"];
   const wordColorsBlind = ["#56B4E9", "#CC79A7", "#E69F00", "#0072B2"];
+  const colours = ["#0093fb", "#ea3636", "#eae236", "#1fc733"];
+  const coloursBlind = ["#56B4E9", "#CC79A7", "#E69F00", "#0072B2"];
 
   // text color Object so they key/values can be matched together to determine correct/incorrect answers
   const wordColorsObject = {
@@ -69,12 +73,12 @@ const Play = (props, { navigation }) => {
     } else if (lives == 1) {
       setLives(lives - 1);
       setPlaying(false);
-      Alert.alert(
-        "Game Over",
-        "You lost all your lives",
-        [{ text: "OK", onPress: () => props.navigation.navigate("Home") }],
-        { cancelable: false }
-      );
+      // Alert.alert(
+      //   "Game Over",
+      //   "You lost all your lives",
+      //   [{ text: "OK", onPress: () => props.navigation.navigate("Home") }],
+      //   { cancelable: false }
+      // );
     } else {
       setLives(lives - 1);
     }
@@ -96,17 +100,20 @@ const Play = (props, { navigation }) => {
             : wordColors
         }
         renderItem={({ item }) => (
-          <View
+          <TouchableOpacity
+            onPress={() => tapHandler(item)}
             style={[
               Styles.gameButton,
               {
                 backgroundColor: item,
               },
             ]}
-            onTouchStart={() => tapHandler(item)}
           >
-            <TouchableOpacity></TouchableOpacity>
-          </View>
+            <View
+              style={{ width: "100%", height: "100%" }}
+              // onTouchStart={() => tapHandler(item)}
+            ></View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -162,21 +169,32 @@ const Play = (props, { navigation }) => {
                 isPlaying={playing}
               />
               {/* Show a random word with a random text color, gets harder after after X score reached */}
-              <Text style={{ marginLeft: "auto", marginRight: "auto", marginTop: 30 }}>
+              <Text
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginTop: 50,
+                }}
+              >
                 {shownWord}
               </Text>
-
             </View>
           </ScrollView>
         </View>
-        <View style={{backgroundColor: 'lightgrey'}}>
-        <Text style={{ marginLeft: 'auto', marginRight: 'auto', fontSize: 25}}>
-              ❤{" "}{lives}{"                     "}
-                <Text style={{right: 0}}>
-                  Score: {score}
-                </Text>
-              </Text>
-        {tappableButtons}
+        <View style={{ backgroundColor: "white" }}>
+          <Text
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              fontSize: 35,
+              fontWeight: "bold",
+            }}
+          >
+            ❤ {lives}
+            {"                     "}
+            <Text style={{ right: 0 }}>Score: {score}</Text>
+          </Text>
+          {tappableButtons}
         </View>
       </React.Fragment>
     );
@@ -202,13 +220,40 @@ const Play = (props, { navigation }) => {
       // Error retrieving data
     }
     content = (
-      <View>
-        <Text style={[Styles.autoMargin, { fontSize: 30, marginTop: 150 }]}>
-          YOUR SCORE {score}
+      <View style={[Styles.container, { paddingTop: "30%" }]}>
+        <Text style={[Styles.title, { textAlign: "center" }]}>
+          Color
+          <Text style={{ color: isColourBlind ? coloursBlind[0] : colours[0] }}>
+            W
+          </Text>
+          <Text style={{ color: isColourBlind ? coloursBlind[1] : colours[1] }}>
+            o
+          </Text>
+          <Text style={{ color: isColourBlind ? coloursBlind[2] : colours[2] }}>
+            r
+          </Text>
+          <Text style={{ color: isColourBlind ? coloursBlind[3] : colours[3] }}>
+            d
+          </Text>
+          s
         </Text>
-        <Text style={[Styles.autoMargin, { fontSize: 20, marginTop: 10 }]}>
-          YOUR ALL TIME HIGHSCORE: {highscore}
+        <Text style={[Styles.autoMargin, { fontSize: 35, marginTop: "10%" }]}>
+          Score: {score}
         </Text>
+        <Text style={[Styles.autoMargin, { fontSize: 25, marginTop: 10 }]}>
+          Highscore: {highscore}
+        </Text>
+        <TouchableOpacity
+          style={[Styles.buttons, { marginTop: 50 }]}
+          onPress={() => props.navigation.navigate("Home")}
+        >
+          {isColourBlind ? <LinearGradient start={{x: 0, y: 1}} end={{x: 1, y: 1}} colors={["#56B4E9", "#CC79A7", "#E69F00", "#0072B2"]} style={Styles.linearGradient} >
+          <Text style={Styles.buttonText}>Back</Text>
+          </LinearGradient> : 
+          <LinearGradient start={{x: 0, y: 1}} end={{x: 1, y: 1}} colors={["#ea3636","#0093fb","#1fc733",  "#eae236"]} style={Styles.linearGradient} >
+          <Text style={Styles.buttonText}>Back</Text>
+          </LinearGradient>}
+        </TouchableOpacity>
       </View>
     );
   }

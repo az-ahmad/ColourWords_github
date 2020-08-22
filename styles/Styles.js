@@ -1,37 +1,41 @@
 import { StyleSheet } from "react-native";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 export const Styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightgrey",
+    backgroundColor: "white",
   },
   title: {
-    fontSize: 60,
+    fontSize: RFPercentage(10),
     fontWeight: "bold",
     color: "#fff",
-    textShadowRadius: 2,
+    textShadowRadius: 5,
     textShadowColor: "#000",
   },
   buttons: {
-    backgroundColor: "#c7c7c7",
-                width: "60%",
-                marginLeft: "auto",
-                marginRight: "auto",
-                borderRadius: 7,
-                justifyContent: "center",
-                borderWidth: 1,
-                marginBottom: 40,
-                paddingTop: 10,
-                paddingBottom: 10
+    backgroundColor: "#fff",
+    width: "60%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: 7,
+    justifyContent: "center",
+    borderWidth: 1,
+    marginBottom: 40,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   buttonText: {
-    fontSize: 27,
+    fontSize: RFPercentage(4.5),
     color: "#fff",
-    marginLeft: 'auto',
-    marginRight:'auto'
+    marginLeft: "auto",
+    marginRight: "auto",
+    textAlign: "center",
+    textShadowRadius:5,
+    textShadowColor: "#000"
   },
   gameBlank: {
-    fontSize: 70,
+    fontSize: RFPercentage(13),
     fontWeight: "bold",
     textShadowColor: "#000",
     textShadowRadius: 2,
@@ -41,13 +45,13 @@ export const Styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
     alignItems: "center",
-    borderWidth: 0.5,
     justifyContent: "center",
     alignItems: "center",
     height: 150,
-    flex: 1,
     height: 150,
-    borderWidth: 0.5,
+    borderWidth: 10,
+    borderColor: "#fff",
+    borderRadius: 30,
   },
   autoMargin: {
     marginLeft: "auto",
@@ -57,41 +61,46 @@ export const Styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
-    backgroundColor: "#c7c7c7",
+    backgroundColor: "#fff",
     borderRadius: 20,
-    borderColor: 'black',
+    borderColor: "black",
     borderWidth: 1,
     padding: 35,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
     textAlign: "center",
-    color: "white",
-    fontSize: 15
-
+    color: "#000",
+    fontSize: RFPercentage(3),
+  },
+  linearGradient: {
+    flex: 0,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5,
   }
 });

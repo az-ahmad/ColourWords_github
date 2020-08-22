@@ -21,7 +21,7 @@ const Timer = ({ navigation, setPlaying, isPlaying }) => {
       Alert.alert(
         "Game Over",
         "The time has run out",
-        [{ text: "OK", onPress: () => navigation.navigate("Home") }],
+        [{ text: "OK"}],
         { cancelable: false }
       );
       setPlaying(false);
@@ -32,7 +32,7 @@ const Timer = ({ navigation, setPlaying, isPlaying }) => {
 
   return (
     <React.Fragment>
-      <Text style={[Styles.autoMargin,{fontSize: 25}]}>Time: {timeState.timer}</Text>
+      <Text style={[Styles.autoMargin,{fontSize: 35,fontWeight:"bold"}]}>Time: {timeState.timer}</Text>
     </React.Fragment>
   );
 };
